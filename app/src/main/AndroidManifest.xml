@@ -3,6 +3,11 @@
     package="com.example.elnardu.glass2">
     <uses-permission
         android:name="com.google.android.glass.permission.DEVELOPMENT" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="com.google.android.permission.INTERNET" />
+    <uses-permission android:name="com.google.android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="com.google.android.permission.CAMERA" />
+    <uses-feature android:name="com.google.android.hardware.camera" />
 
     <application
         android:allowBackup="true"
