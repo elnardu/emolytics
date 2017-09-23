@@ -31,6 +31,9 @@ import android.provider.MediaStore;
 import android.util.Base64;
 import android.util.Log;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -70,10 +73,18 @@ public final class EmbeddedCardLayoutActivity extends Activity {
 //                socket.disconnect();
             }
 
-        }).on("event", new Emitter.Listener() {
+        }).on("faceData", new Emitter.Listener() {
 
             @Override
-            public void call(Object... args) {}
+            public void call(Object... args) {
+                final JSONObject obj = (JSONObject)args[0];
+                EmbeddedCardLayoutActivity.this.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        updateTable(obj);
+                    }
+                });
+            }
 
         }).on(Socket.EVENT_DISCONNECT, new Emitter.Listener() {
 
@@ -83,27 +94,31 @@ public final class EmbeddedCardLayoutActivity extends Activity {
         });
         socket.connect();
         mCardScroller = new CardScrollView(this);
-        mCardScroller.setAdapter(new EmbeddedCardLayoutAdapter(this, createItems()));
-        setContentView(mCardScroller);
+
         takePicture();
 
     }
 
-    /** Creates some sample items that will be displayed on cards in the card scroll view. */
-    private List<SimpleTableItem> createItems() {
+
+    private void updateTable(JSONObject obj) {
         ArrayList<SimpleTableItem> items = new ArrayList<SimpleTableItem>();
 
-        items.add(new SimpleTableItem(R.drawable.ic_circle_blue, "Water", "8 oz"));
-        items.add(new SimpleTableItem(R.drawable.ic_circle_yellow, "Eggs, large", "2"));
-        items.add(new SimpleTableItem(R.drawable.ic_circle_red, "Ground beef", "4 oz"));
-        items.add(new SimpleTableItem(R.drawable.ic_circle_green, "Brussel sprouts", "1 cup"));
-        items.add(new SimpleTableItem(R.drawable.ic_circle_green, "Celery", "1 stalk"));
-        items.add(new SimpleTableItem(R.drawable.ic_circle_red, "Beef jerky", "8 strips"));
-        items.add(new SimpleTableItem(R.drawable.ic_circle_yellow, "Almonds", "3 handfuls"));
-        items.add(new SimpleTableItem(
-                R.drawable.ic_circle_red, "Strawberry fruit leather", "2.5 miles"));
+        try {
+            items.add(new SimpleTableItem(R.drawable.ic_circle_blue, "Anger", obj.getDouble("anger") * 100 + "%"));
+            items.add(new SimpleTableItem(R.drawable.ic_circle_yellow, "Contempt", obj.getDouble("contempt") * 100 + "%"));
+            items.add(new SimpleTableItem(R.drawable.ic_circle_red, "Disgust", obj.getDouble("disgust") * 100 + "%"));
+            items.add(new SimpleTableItem(R.drawable.ic_circle_green, "Fear", obj.getDouble("fear") * 100 + "%"));
+            items.add(new SimpleTableItem(R.drawable.ic_circle_green, "Happiness", obj.getDouble("happiness") * 100 + "%"));
+            items.add(new SimpleTableItem(R.drawable.ic_circle_red, "Neutral", obj.getDouble("neutral") * 100 + "%"));
+            items.add(new SimpleTableItem(R.drawable.ic_circle_yellow, "Sadness", obj.getDouble("sadness") * 100 + "%"));
+            items.add(new SimpleTableItem(R.drawable.ic_circle_red, "Surprise", obj.getDouble("surprise") * 100 + "%"));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
-        return items;
+
+        mCardScroller.setAdapter(new EmbeddedCardLayoutAdapter(this, items));
+        setContentView(mCardScroller);
     }
 
     @Override
