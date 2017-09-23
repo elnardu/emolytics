@@ -1,0 +1,102 @@
+<resources>
+    <string name="app_name">Glass2</string>
+    <string name="title_activity_main">Hello World Immersion</string>
+    <string name="hello_world">Hello world!</string>
+
+
+    <!-- Used for API cards to describe which API example will be triggered. -->
+    <string name="text_card_builder">CardBuilder API examples</string>
+    <string name="text_card_builder_embedded_layout">CardBuilder with embedded layout example</string>
+    <string name="text_card_scroll_view">CardScrollView API examples</string>
+    <string name="text_gesture_detector">GestureDetector API examples</string>
+    <string name="text_text_appearance">Text appearance examples</string>
+    <string name="text_voice_menu">Voice menu</string>
+    <string name="text_slider">Slider</string>
+
+    <!-- Used as content for cards in the CardBuilder API examples. -->
+    <string name="text_card_footnote">This is the footnote</string>
+    <string name="text_card_timestamp">just now</string>
+    <string name="text_card_text_not_fixed">This is the TEXT layout. The text size will adjust dynamically.</string>
+    <string name="text_card_text_with_images">You can also add images to the background of a TEXT card.</string>
+    <string name="text_card_text_fixed">This is the TEXT_FIXED layout. The text size is always the same.</string>
+    <string name="text_card_text_stack_indicator">A stack indicator can be added to the corner of a card to indicate that it represents a bundle of other items.</string>
+    <string name="text_card_columns_not_fixed">This is the COLUMNS layout with dynamic text.</string>
+    <string name="text_card_columns_with_icon">You can even put a centered icon on a COLUMNS card instead of a mosaic.</string>
+    <string name="text_card_columns_fixed">This is the COLUMNS_FIXED layout. The text size is always the same.</string>
+    <string name="text_card_caption">The CAPTION layout.</string>
+    <string name="text_card_caption_with_icon">The CAPTION layout with an icon.</string>
+    <string name="text_card_title">TITLE Card</string>
+    <string name="text_card_title_icon">TITLE Card</string>
+    <string name="text_card_menu">MENU layout</string>
+    <string name="text_card_menu_description">Optional menu description</string>
+    <string name="text_card_alert">Don\'t freak out</string>
+    <string name="text_card_alert_description">This is just the ALERT layout</string>
+    <string name="text_card_author_text">The AUTHOR layout lets you display a message or conversation with a focus on the author.</string>
+    <string name="text_card_author_heading">Joe Lastname</string>
+    <string name="text_card_author_subheading">Mountain View, California</string>
+
+    <!-- Used as content for cards in the CardScrollView API examples. -->
+    <string name="text_card_no_action">This card has no associated action.</string>
+    <string name="text_card_tap_to_navigate_begin">Tap to navigate to the first card.</string>
+    <string name="text_card_tap_to_navigate_end">Tap to navigate to the last card.</string>
+    <string name="text_card_tap_to_insert_begin">Tap to insert another card at the beginning.</string>
+    <string name="text_card_tap_to_insert_before">Tap to insert another card before this one.</string>
+    <string name="text_card_tap_to_insert_after">Tap to insert another card after this one.</string>
+    <string name="text_card_tap_to_insert_end">Tap to insert another card at the end.</string>
+    <string name="text_card_tap_to_delete">Tap to delete this card.</string>
+
+    <!-- Used as content for cards in the CardBuilder embedded layout example. -->
+    <string name="text_card_embedded_footnote">Foods you tracked</string>
+    <string name="text_card_embedded_timestamp">today</string>
+
+    <!-- Used for cards that describe which gesture detector demo will be triggered. -->
+    <string name="discrete_gestures">Discrete gestures</string>
+    <string name="continuous_gestures">Continuous (scrolling) gestures</string>
+
+    <!-- Used by the discrete and continuous touchpad gesture demos. -->
+    <string name="last_gesture">Last gesture</string>
+    <string name="finger_count">Finger count</string>
+    <string name="scrolling">Scroll type</string>
+    <string name="displacement">Displacement</string>
+    <string name="delta">Delta</string>
+    <string name="velocity">Velocity</string>
+    <string name="scroll_one_finger">One-finger</string>
+    <string name="scroll_two_finger">Two-finger</string>
+    <string name="pixel_distance_units">%1$.0f px</string>
+    <string name="pixel_velocity_units">%1$.3f px/s</string>
+    <string name="swipe_down_again">Swipe down again to go back</string>
+
+    <!-- Used by the theming demos. -->
+    <string name="text_large">Lorem ipsum dolor sit ameti,</string>
+    <string name="text_medium">consectetur adipiscing elit. Aliquam mollis fringilla ultrices.</string>
+    <string name="text_small">Vivamus ultricies velit nunc, id ornare elit rhoncus id. Cras felis est, fringilla sed nisi non, pulvinar vulputate ante.</string>
+
+    <string name="text_large_specification">textAppearanceLarge (Roboto Thin 64px)</string>
+    <string name="text_medium_specification">textAppearanceMedium (Roboto Light 40px)</string>
+    <string name="text_small_specification">textAppearanceSmall (Roboto Regular 24px)</string>
+
+    <!-- Used by the OpengGL LiveCard demo. -->
+    <string name="stop">stop</string>
+    <string name="text_opengl">OpenGL LiveCard example</string>
+
+    <!-- Used to build a voice menu. -->
+    <string name="menu_designer">Pick a designer</string>
+    <string name="menu_coder">Pick a coder</string>
+    <string name="menu_coder1">Alfa</string>
+    <string name="menu_coder2">Bravo</string>
+    <string name="menu_coder3">Charlie</string>
+    <string name="menu_coder4">Delta</string>
+    <string name="menu_coder5">Echo</string>
+    <string name="menu_product">Pick a product manager</string>
+
+    <string name="voice_menu_explanation">
+        Sample voice menu activity. Tap to toggle voice menu.
+    </string>
+
+    <!-- Used by the Slider demo. -->
+    <string name="text_slider_scroller">Start a scrolling Slider</string>
+    <string name="text_slider_determinate">Start a determinate Slider</string>
+    <string name="text_slider_grace_period">Start a grace period Slider</string>
+    <string name="text_slider_indeterminate">Start an indeterminate Slider</string>
+
+</resources>
