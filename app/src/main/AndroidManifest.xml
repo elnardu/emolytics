@@ -6,7 +6,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="com.google.android.permission.INTERNET" />
     <uses-permission android:name="com.google.android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="com.google.android.permission.CAMERA" />
+    <uses-permission android:name="com.google.android.glass.permission.CAMERA" />
     <uses-feature android:name="com.google.android.hardware.camera" />
 
     <application
@@ -16,7 +16,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".MainActivity"
+            android:name=".EmbeddedCardLayoutActivity"
             android:icon="@drawable/ic_glass_logo"
             android:label="@string/title_activity_main">
             <intent-filter>
@@ -28,9 +28,9 @@
                 android:resource="@xml/voice_trigger" />
         </activity>
 
-        <activity android:name=".EmbeddedCardLayoutActivity"
-            android:exported="true"
-            />
+        <!--<activity android:name=".EmbeddedCardLayoutActivity"-->
+            <!--android:exported="true"-->
+            <!--/>-->
 
     </application>
 

@@ -71,9 +71,9 @@
     <string name="text_medium">consectetur adipiscing elit. Aliquam mollis fringilla ultrices.</string>
     <string name="text_small">Vivamus ultricies velit nunc, id ornare elit rhoncus id. Cras felis est, fringilla sed nisi non, pulvinar vulputate ante.</string>
 
-    <string name="text_large_specification">textAppearanceLarge (Roboto Thin 64px)</string>
-    <string name="text_medium_specification">textAppearanceMedium (Roboto Light 40px)</string>
-    <string name="text_small_specification">textAppearanceSmall (Roboto Regular 24px)</string>
+    <string name="text_large_specification">textAppearanceLarge (Roboto Regular 150px)</string>
+    <string name="text_medium_specification">textAppearanceMedium (Roboto Bold 150px)</string>
+    <string name="text_small_specification">textAppearanceSmall (Roboto Regular 150px)</string>
 
     <!-- Used by the OpengGL LiveCard demo. -->
     <string name="stop">stop</string>

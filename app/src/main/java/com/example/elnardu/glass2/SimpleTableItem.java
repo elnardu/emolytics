@@ -20,7 +20,7 @@ package com.example.elnardu.glass2;
  * Simple data object used to represent items in a table, which are converted into views by
  * {@link EmbeddedCardLayoutAdapter}.
  */
-public class SimpleTableItem {
+public class SimpleTableItem implements Comparable<SimpleTableItem> {
 
     /** The image resource ID associated with the table item. */
     public final int iconResId;
@@ -29,15 +29,44 @@ public class SimpleTableItem {
     public final CharSequence primaryText;
 
     /** The secondary text associated with the table item. */
-    public final CharSequence secondaryText;
+    public final String secondaryText;
 
+    public final double percent;
     /**
      * Initializes a new {@code SimpleTableItem} with the specified icon, primary text, and
      * secondary text.
      */
-    public SimpleTableItem(int iconResId, CharSequence primaryText, CharSequence secondaryText) {
+    public SimpleTableItem(int iconResId, CharSequence primaryText, double percent) {
+        super();
         this.iconResId = iconResId;
         this.primaryText = primaryText;
-        this.secondaryText = secondaryText;
+        this.percent = percent * 100;
+        this.secondaryText = String.format("%.2f", this.percent);
+    }
+
+    public double getPercent() {
+        return this.percent;
+    }
+
+    public int compare(SimpleTableItem o1, SimpleTableItem o2) {
+        return o1.compareTo(o2);
+    }
+
+    @Override
+    public int compareTo(SimpleTableItem compareItem) {
+
+        double compareQuantity = ((SimpleTableItem) compareItem).getPercent();
+
+        //ascending order
+        return compareQuantity - this.percent > 0 ? 1 : -1;
+
+        //descending order
+        //return compareQuantity - this.quantity;
+
+    }
+
+    @Override
+    public String toString(){
+        return new String((String) this.secondaryText);
     }
 }

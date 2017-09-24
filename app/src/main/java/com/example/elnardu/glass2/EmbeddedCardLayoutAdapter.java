@@ -36,7 +36,7 @@ import java.util.List;
 public class EmbeddedCardLayoutAdapter extends CardScrollAdapter {
 
     /** The maximum number of items that fit on a card. */
-    private static final int ITEMS_PER_CARD = 4;
+    private static final int ITEMS_PER_CARD = 2;
 
     /** Index of the {@link ImageView} containing the icon in a table row. */
     private static final int IMAGE_VIEW_INDEX = 0;
@@ -86,9 +86,9 @@ public class EmbeddedCardLayoutAdapter extends CardScrollAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         CardBuilder card = new CardBuilder(mContext, CardBuilder.Layout.EMBED_INSIDE)
-            .setEmbeddedLayout(R.layout.simple_table)
-            .setFootnote(R.string.text_card_embedded_footnote)
-            .setTimestamp(R.string.text_card_embedded_timestamp);
+            .setEmbeddedLayout(R.layout.simple_table);
+//            .setFootnote(R.string.text_card_embedded_footnote)
+//            .setTimestamp(R.string.text_card_embedded_timestamp);
         View view = card.getView(convertView, parent);
 
         // Get a reference to an embedded view from the custom layout and then manipulate it.

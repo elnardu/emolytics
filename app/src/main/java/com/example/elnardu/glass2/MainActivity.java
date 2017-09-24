@@ -7,6 +7,7 @@ import com.google.android.glass.widget.CardScrollView;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.media.AudioManager;
 import android.os.Bundle;
 import android.view.View;
@@ -38,6 +39,12 @@ public class MainActivity extends Activity {
     @Override
     protected void onCreate(Bundle bundle) {
         super.onCreate(bundle);
+
+        try {
+            Intent k = new Intent(MainActivity.this, EmbeddedCardLayoutActivity.class);
+            startActivity(k);
+        } catch(Exception e) {
+        }
 
         mView = buildView();
 

@@ -30,6 +30,8 @@ import android.os.FileObserver;
 import android.provider.MediaStore;
 import android.util.Base64;
 import android.util.Log;
+import android.view.KeyEvent;
+import android.view.WindowManager;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -38,14 +40,19 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import io.socket.client.IO;
 import io.socket.client.Socket;
 import io.socket.emitter.Emitter;
+
+import static android.content.ContentValues.TAG;
+import static android.provider.MediaStore.Files.FileColumns.MEDIA_TYPE_IMAGE;
 
 /**
  * Creates a card scroll view that shows an example of using a custom embedded layout in a
@@ -55,13 +62,36 @@ public final class EmbeddedCardLayoutActivity extends Activity {
 
     private CardScrollView mCardScroller;
     private Socket socket;
-    private Camera mCamera;
+//    private Camera mCamera;
+//    private CameraPreview mPreview;
+
+//    private Camera.PictureCallback mPicture = new Camera.PictureCallback() {
+//
+//        @Override
+//        public void onPictureTaken(byte[] data, Camera camera) {
+//
+//            socket.emit("analyzeFace", data);
+
+//            try {
+//                FileOutputStream fos = new FileOutputStream(pictureFile);
+//                fos.write(data);
+//                fos.close();
+//            } catch (FileNotFoundException e) {
+//                Log.d(TAG, "File not found: " + e.getMessage());
+//            } catch (IOException e) {
+//                Log.d(TAG, "Error accessing file: " + e.getMessage());
+//            }
+//        }
+//    };
 
     @Override
     protected void onCreate(Bundle bundle) {
         super.onCreate(bundle);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         try {
-            socket = IO.socket("http://54.209.243.70:8080/");
+            if(socket == null) {
+                socket = IO.socket("http://52.170.24.238:8080/");
+            }
         } catch (URISyntaxException e) {
             e.printStackTrace();
         }
@@ -86,6 +116,18 @@ public final class EmbeddedCardLayoutActivity extends Activity {
                 });
             }
 
+        }).on("noface", new Emitter.Listener() {
+
+            @Override
+            public void call(Object... args) {
+                EmbeddedCardLayoutActivity.this.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        noface();
+                    }
+                });
+            }
+
         }).on(Socket.EVENT_DISCONNECT, new Emitter.Listener() {
 
             @Override
@@ -95,7 +137,11 @@ public final class EmbeddedCardLayoutActivity extends Activity {
         socket.connect();
         mCardScroller = new CardScrollView(this);
 
-        takePicture();
+//        mCamera = getCameraInstance();
+        // Create our Preview view and set it as the content of our activity.
+//        mPreview = new CameraPreview(this, mCamera);
+//        takePicture();
+
 
     }
 
@@ -104,18 +150,29 @@ public final class EmbeddedCardLayoutActivity extends Activity {
         ArrayList<SimpleTableItem> items = new ArrayList<SimpleTableItem>();
 
         try {
-            items.add(new SimpleTableItem(R.drawable.ic_circle_blue, "Anger", obj.getDouble("anger") * 100 + "%"));
-            items.add(new SimpleTableItem(R.drawable.ic_circle_yellow, "Contempt", obj.getDouble("contempt") * 100 + "%"));
-            items.add(new SimpleTableItem(R.drawable.ic_circle_red, "Disgust", obj.getDouble("disgust") * 100 + "%"));
-            items.add(new SimpleTableItem(R.drawable.ic_circle_green, "Fear", obj.getDouble("fear") * 100 + "%"));
-            items.add(new SimpleTableItem(R.drawable.ic_circle_green, "Happiness", obj.getDouble("happiness") * 100 + "%"));
-            items.add(new SimpleTableItem(R.drawable.ic_circle_red, "Neutral", obj.getDouble("neutral") * 100 + "%"));
-            items.add(new SimpleTableItem(R.drawable.ic_circle_yellow, "Sadness", obj.getDouble("sadness") * 100 + "%"));
-            items.add(new SimpleTableItem(R.drawable.ic_circle_red, "Surprise", obj.getDouble("surprise") * 100 + "%"));
+            items.add(new SimpleTableItem(R.drawable.ic_circle_blue, "Anger", obj.getDouble("anger")));
+            items.add(new SimpleTableItem(R.drawable.ic_circle_yellow, "Contempt", obj.getDouble("contempt")));
+            items.add(new SimpleTableItem(R.drawable.ic_circle_red, "Disgust", obj.getDouble("disgust")));
+            items.add(new SimpleTableItem(R.drawable.ic_circle_green, "Fear", obj.getDouble("fear")));
+            items.add(new SimpleTableItem(R.drawable.ic_circle_green, "Happiness", obj.getDouble("happiness")));
+            items.add(new SimpleTableItem(R.drawable.ic_circle_red, "Neutral", obj.getDouble("neutral")));
+            items.add(new SimpleTableItem(R.drawable.ic_circle_yellow, "Sadness", obj.getDouble("sadness")));
+            items.add(new SimpleTableItem(R.drawable.ic_circle_red, "Surprise", obj.getDouble("surprise")));
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
+        Collections.sort(items);
+
+
+        mCardScroller.setAdapter(new EmbeddedCardLayoutAdapter(this, items));
+        setContentView(mCardScroller);
+    }
+
+    private void noface() {
+        ArrayList<SimpleTableItem> items = new ArrayList<SimpleTableItem>();
+
+        items.add(new SimpleTableItem(R.drawable.ic_circle_blue, "NO FACE", 0));
 
         mCardScroller.setAdapter(new EmbeddedCardLayoutAdapter(this, items));
         setContentView(mCardScroller);
@@ -133,12 +190,18 @@ public final class EmbeddedCardLayoutActivity extends Activity {
         super.onPause();
     }
 
+    @Override
+    protected void onDestroy() {
+        socket.close();
+        super.onDestroy();
+    }
 
     private static final int TAKE_PICTURE_REQUEST = 1;
 
     private void takePicture() {
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         startActivityForResult(intent, TAKE_PICTURE_REQUEST);
+//        mCamera.takePicture(null, null, mPicture);
     }
 
     @Override
@@ -203,11 +266,34 @@ public final class EmbeddedCardLayoutActivity extends Activity {
 
     private void processPicture(File file) {
         Bitmap bm = BitmapFactory.decodeFile(file.getPath());
+        bm = Bitmap.createScaledBitmap(bm, 632*2, 464*2, false);
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         bm.compress(Bitmap.CompressFormat.JPEG, 100, baos); //bm is the bitmap object
         byte[] b = baos.toByteArray();
-        String encodedImage = Base64.encodeToString(b, Base64.DEFAULT);
+//        String encodedImage = Base64.encodeToString(b, Base64.DEFAULT);
 
         socket.emit("analyzeFace", b);
+    }
+
+    public static Camera getCameraInstance(){
+        Camera c = null;
+        try {
+            c = Camera.open(); // attempt to get a Camera instance
+        }
+        catch (Exception e){
+            // Camera is not available (in use or does not exist)
+            System.out.println(e);
+        }
+        return c; // returns null if camera is unavailable
+    }
+
+    @Override
+    public boolean onKeyDown(int keycode, KeyEvent event) {
+        if (keycode == KeyEvent.KEYCODE_DPAD_CENTER) {
+            takePicture();
+            return true;
+        }
+
+        return super.onKeyDown(keycode, event);
     }
 }
